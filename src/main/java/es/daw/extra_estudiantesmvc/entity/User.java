@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
-@Data
+@Data //??? uy un Data en un Entity!!!! MAAAAAAAAAAAAAAAAAAAAlll  ConcurrentModificationException
 @AllArgsConstructor
 public class User implements UserDetails {
     @Id
@@ -48,9 +48,10 @@ public class User implements UserDetails {
         roles = new HashSet<>();
     }
 
+    // ------- MÉTODO HELPER ----
     public void addRole(Role role) {
         roles.add(role);
-        //role.getUsers().add(this);
+        //role.getUsers().add(this); // ???? por qué comentado??? provoca bug???
     }
 
     public void removeRole(Role role) {

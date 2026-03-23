@@ -3,6 +3,7 @@ package es.daw.extra_estudiantesmvc.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -42,6 +43,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/","/login","/home","/h2-console/**").permitAll()
+                        .requestMatchers("/invitado").permitAll()
+
+                        //.requestMatchers(HttpMethod.GET,"/register").permitAll()
+                        .requestMatchers("/register").permitAll()
                         //.requestMatchers("/error", "/error/**").permitAll()
                         //.requestMatchers(HttpMethod.GET, "/events","/events/**").permitAll()
                         .anyRequest().authenticated()
