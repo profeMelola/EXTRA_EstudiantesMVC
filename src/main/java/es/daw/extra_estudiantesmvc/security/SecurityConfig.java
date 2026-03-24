@@ -34,7 +34,7 @@ public class SecurityConfig {
                 //.csrf(csrf -> csrf.ignoringRequestMatchers("/h2/**"))
 
                 // PENDIENTE CONFIGURAR CORRECTAMENTE CSRF!!!! VER AL DETALLE QUÉ ES!!!!
-                //.csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable())
                 //.headers(headers -> headers.frameOptions(f -> f.disable()))// frames de h2-console
 
                 // ?????
@@ -54,7 +54,12 @@ public class SecurityConfig {
 
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/", true)
+                        /*Ejemplo práctico:
+Usuario intenta acceder a /admin → redirige a /login.
+Con defaultSuccessUrl("/principal", true): tras autenticarse va a /principal.
+Con defaultSuccessUrl("/principal", false): tras autenticarse vuelve a /admin (comportamiento "volver a donde quiso ir").*/
+
+                        .defaultSuccessUrl("/principal", true) // con true indicamos que siempre se usa esta url cuando el login es ok
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )

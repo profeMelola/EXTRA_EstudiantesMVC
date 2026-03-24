@@ -36,13 +36,14 @@ public class UserService {
         // 3. Asigno el role al usuario
         user.addRole(role);
 
-        System.out.println("********** USUARIO A REGISTAR **********");
-        System.out.println(user);
-        System.out.println("****************************************");
+//        System.out.println("********** USUARIO A REGISTAR **********");
+//        System.out.println(user);
+//        System.out.println("****************************************");
 
-        log.trace("********** USUARIO A REGISTAR **********");
-        log.trace(user.toString());
-        log.trace("****************************************");
+        // PENDIENTE!!! por qué no pinta las trazas del log!!!!!
+        log.info("********** USUARIO A REGISTAR **********");
+        log.info(user.toString());
+        log.info("****************************************");
 
         // 4. Salvar usuario
         userRepository.save(user);

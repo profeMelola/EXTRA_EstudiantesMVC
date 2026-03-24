@@ -8,12 +8,25 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+
+
+    @GetMapping("/login")
+    public String mostrarLogin(@RequestParam(value="error", required = false) String error, Model model) {
+        if (error != null) {
+            model.addAttribute("error", "Usuario o pwd incorrectos!!!!");
+        }
+        return "login";
+
+    }
+
+    // ------------------
 
     @GetMapping("/register")
     public String mostrarRegistro(Model model) {
@@ -32,6 +45,8 @@ public class UserController {
 
         // Utilizar un servicio para acceso a BD (repo)
         userService.registerUser(user);
+
+        // PENDIENTE!!! MEJORA!!! Mandar mensaje a login de que todo ha ido ok
 
         return "redirect:/login";
 

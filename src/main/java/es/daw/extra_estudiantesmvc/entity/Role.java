@@ -3,14 +3,18 @@ package es.daw.extra_estudiantesmvc.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-@Data
+//@Data // constructor completo, ya no recuerdo si vacío, getters, setters, toString, equals, hashCode...
+@Getter
 @AllArgsConstructor
+//@ToString  // nooooooooooooo StackOverFlow
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
