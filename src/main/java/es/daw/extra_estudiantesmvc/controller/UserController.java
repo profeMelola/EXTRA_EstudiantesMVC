@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -41,12 +42,14 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public String registrar(@ModelAttribute("user") User user) {
+    public String registrar(@ModelAttribute("user") User user,
+                            RedirectAttributes redirectAttributes) {
 
         // Utilizar un servicio para acceso a BD (repo)
         userService.registerUser(user);
 
         // PENDIENTE!!! MEJORA!!! Mandar mensaje a login de que todo ha ido ok
+        redirectAttributes.addFlashAttribute("success", "Usuario registrado correctamente. Por favor, inicie sesión!!!");
 
         return "redirect:/login";
 
