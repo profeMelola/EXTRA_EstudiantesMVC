@@ -4,30 +4,52 @@ import es.daw.extra_estudiantesmvc.dto.EstudianteDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriBuilder;
+
+import java.net.URI;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class FiltrosService {
 
-    // Usar WebClient para conectar al api
-
-    // Primero me autentico para recibir un token
-
-    // Después con el token vuelvo a usar webclient para obtener el informe del estudiante en base al filtro
-
+    private final WebClient webClientAPI;
 
     private final AuthService authService;
 
-    public EstudianteDTO filtrar(String url){
+    public EstudianteDTO filtrar(Function<UriBuilder, URI> uriFn){
+    //public EstudianteDTO filtrar(String url){
+
         String token = authService.obtenerToken();
         log.info("*******************");
-        log.info(token);
+        log.info("Token obtenido (oculto en INFO): **** (longitud={})", token != null ? token.length() : 0);
+        log.info("URL de consulta: {}", uriFn.toString());
         log.info("*******************");
 
-        return null;
+
+        return webClientAPI.get()
+                .uri(uriFn)
+                .header("Authorization","Bearer "+token)
+                .retrieve()
+                .bodyToMono(EstudianteDTO.class)
+                .block();
     }
 
 
+    public EstudianteDTO findByNia(String nia) {
+        String token = authService.obtenerToken();
+
+        return webClientAPI.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/estudiantes/search/findByNia")
+                        .queryParam("nia", nia)
+                        .build())
+                .header("Authorization", "Bearer " + token)
+                .retrieve()
+                .bodyToMono(EstudianteDTO.class)
+                .block();
+    }
 
 }
