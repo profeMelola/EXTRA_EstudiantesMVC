@@ -1,5 +1,6 @@
 package es.daw.extra_estudiantesmvc.controller;
 
+import es.daw.extra_estudiantesmvc.dto.EstudianteDTO;
 import es.daw.extra_estudiantesmvc.service.FiltrosService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,23 +36,35 @@ public class FiltrosController {
         // Se lee muy fácil
         // Parámetros dinámicos fácil
         // Integración nativa con WebClient
+
+
+        EstudianteDTO estudianteDTO = null;
+
         if (nia != null){
-            filtrosService.filtrar(
+            estudianteDTO = filtrosService.filtrar(
                     uriBuilder -> uriBuilder
                             .path("/findByNia")
                             .queryParam("nia",nia)
                             .build());
-            );
+
+            //filtrosService.filtrarConString(nia,null,null,null);
+
         }else if (nombre != null && primerApellido != null && segundoApellido != null){
-            filtrosService.filtrar(uriBuilder -> uriBuilder
+            estudianteDTO = filtrosService.filtrar(uriBuilder -> uriBuilder
                     .path("/findByNombreAndPrimerApellidoAndSegundoApellido")
                     .queryParam("nombre",nombre)
                     .queryParam("primerApellido",primerApellido)
                     .queryParam("segundoApellido",segundoApellido)
                     .build());
+
+            //filtrosService.filtrarConString(null,nombre,primerApellido,segundoApellido);
         }
 
-        return "estudiantes/informe";
+        log.debug("Resultado del estudiante: {}",estudianteDTO.toString());
+
+        model.addAttribute("estudiante",estudianteDTO);
+
+        return "estudiantes/informe"; // vista con el informe del estudiante
     }
 
 }
